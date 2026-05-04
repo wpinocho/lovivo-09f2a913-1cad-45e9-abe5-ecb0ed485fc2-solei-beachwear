@@ -6,96 +6,182 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* SOLEÏ Design System — Luxury Women's Beachwear
+   Colors: Deep Bordeaux + Champagne Gold + Warm Cream
+   All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Warm cream background */
+    --background: 36 30% 97%;
+    --foreground: 345 55% 14%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 36 20% 99%;
+    --card-foreground: 345 55% 14%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 345 55% 14%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Deep bordeaux wine */
+    --primary: 345 58% 22%;
+    --primary-foreground: 38 60% 75%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Warm sand */
+    --secondary: 36 35% 92%;
+    --secondary-foreground: 345 55% 14%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted warm */
+    --muted: 36 25% 94%;
+    --muted-foreground: 345 20% 48%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Champagne gold accent */
+    --accent: 38 52% 60%;
+    --accent-foreground: 345 55% 14%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 36 20% 88%;
+    --input: 36 20% 88%;
+    --ring: 345 58% 22%;
 
-    --radius: 0.5rem;
+    /* Minimal radius — luxury sharp lines */
+    --radius: 0.125rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Hero section colors */
+    --hero-bg: 345 55% 18%;
+    --hero-fg: 38 60% 75%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 36 20% 98%;
+    --sidebar-foreground: 345 40% 20%;
+    --sidebar-primary: 345 58% 22%;
+    --sidebar-primary-foreground: 38 60% 75%;
+    --sidebar-accent: 36 25% 94%;
+    --sidebar-accent-foreground: 345 40% 20%;
+    --sidebar-border: 36 20% 88%;
+    --sidebar-ring: 345 58% 22%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 345 30% 8%;
+    --foreground: 36 30% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 345 25% 10%;
+    --card-foreground: 36 30% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 345 25% 10%;
+    --popover-foreground: 36 30% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 38 55% 65%;
+    --primary-foreground: 345 55% 14%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 345 25% 16%;
+    --secondary-foreground: 36 30% 95%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 345 25% 16%;
+    --muted-foreground: 36 20% 60%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 38 50% 58%;
+    --accent-foreground: 345 55% 14%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 345 25% 20%;
+    --input: 345 25% 20%;
+    --ring: 38 55% 65%;
+    --sidebar-background: 345 30% 6%;
+    --sidebar-foreground: 36 25% 90%;
+    --sidebar-primary: 38 55% 65%;
+    --sidebar-primary-foreground: 345 55% 14%;
+    --sidebar-accent: 345 25% 14%;
+    --sidebar-accent-foreground: 36 25% 90%;
+    --sidebar-border: 345 25% 16%;
+    --sidebar-ring: 38 55% 65%;
   }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+}
+
+/* SOLEÏ Typography System */
+.font-display {
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+}
+
+.font-brand {
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  letter-spacing: 0.35em;
+  font-weight: 300;
+}
+
+/* Luxury animations */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-fade-in {
+  animation: fade-in 1.2s ease both;
+}
+
+.animate-shimmer {
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Hero section */
+.hero-section {
+  background-color: hsl(var(--hero-bg));
+  color: hsl(var(--hero-fg));
+}
+
+/* Gold divider */
+.gold-divider {
+  width: 3rem;
+  height: 1px;
+  background: hsl(var(--accent));
+  margin: 0 auto;
+}
+
+/* Product card hover */
+.product-card-hover {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+}
+
+.product-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px hsl(345 55% 14% / 0.12);
+}
+
+/* Marquee scroll animation */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 @layer base {

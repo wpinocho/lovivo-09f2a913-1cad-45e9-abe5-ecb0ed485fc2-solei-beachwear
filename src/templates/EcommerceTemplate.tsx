@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useState, useEffect } from 'react'
 import { PageTemplate } from './PageTemplate'
 import { BrandLogoLeft } from '@/components/BrandLogoLeft'
 import { SocialLinks } from '@/components/SocialLinks'
@@ -6,19 +6,11 @@ import { FloatingCart } from '@/components/FloatingCart'
 import { ProfileMenu } from '@/components/ProfileMenu'
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
-import { ShoppingCart } from 'lucide-react'
+import { ShoppingCart, Menu, X } from 'lucide-react'
 import { useCartUISafe } from '@/components/CartProvider'
 import { useCart } from '@/contexts/CartContext'
 import { useCollections } from '@/hooks/useCollections'
-import { Input } from '@/components/ui/input'
 import { ScrollLink } from '@/components/ScrollLink'
-
-/**
- * EDITABLE TEMPLATE - EcommerceTemplate
- * 
- * Template específico para páginas de ecommerce con header, footer y cart.
- * El agente IA puede modificar completamente el diseño, colores, layout.
- */
 
 interface EcommerceTemplateProps {
   children: ReactNode
@@ -46,55 +38,73 @@ export const EcommerceTemplate = ({
   const { getTotalItems } = useCart()
   const totalItems = getTotalItems()
   const { hasCollections, loading: loadingCollections } = useCollections()
+  const [scrolled, setScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 40)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const header = (
-    <div className={`py-2 ${headerClassName}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className={`transition-all duration-500 ${scrolled ? 'py-3 bg-background/95 backdrop-blur shadow-sm' : 'py-4 bg-background'} ${headerClassName}`}>
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <BrandLogoLeft />
 
-          {/* Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <nav className="flex space-x-6">
-              {!loadingCollections && hasCollections && (
-                <ScrollLink 
-                  to="/#collections" 
-                  className="text-foreground/70 hover:text-foreground transition-colors"
-                >
-                  Colecciones
-                </ScrollLink>
-              )}
-              <ScrollLink 
-                to="/#products" 
-                className="text-foreground/70 hover:text-foreground transition-colors"
-              >
-                Productos
-              </ScrollLink>
-              <Link 
-                to="/blog" 
-                className="text-foreground/70 hover:text-foreground transition-colors"
-              >
-                Blog
-              </Link>
-            </nav>
+          {/* Mobile menu button */}
+          <button
+            className="md:hidden p-2 text-foreground/70 hover:text-foreground transition-colors"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Menu"
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+
+          {/* Logo — centered on mobile */}
+          <div className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
+            <BrandLogoLeft />
           </div>
 
-          {/* Profile & Cart */}
-          <div className="flex items-center space-x-2">
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-10">
+            {!loadingCollections && hasCollections && (
+              <ScrollLink
+                to="/#collections"
+                className="font-body text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Colecciones
+              </ScrollLink>
+            )}
+            <ScrollLink
+              to="/#products"
+              className="font-body text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Productos
+            </ScrollLink>
+            <Link
+              to="/blog"
+              className="font-body text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Revista
+            </Link>
+          </nav>
+
+          {/* Right: Profile & Cart */}
+          <div className="flex items-center space-x-1">
             <ProfileMenu />
-            
             {showCart && (
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={openCart}
-                className="relative"
+                className="relative text-foreground/80 hover:text-foreground hover:bg-secondary"
                 aria-label="Ver carrito"
               >
-                <ShoppingCart className="h-5 w-5" />
+                <ShoppingCart className="h-[18px] w-[18px]" />
                 {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-primary text-[10px] font-semibold rounded-full h-4 w-4 flex items-center justify-center"
+                    style={{ color: 'hsl(var(--primary-foreground))' }}>
                     {totalItems > 99 ? '99+' : totalItems}
                   </span>
                 )}
@@ -105,76 +115,125 @@ export const EcommerceTemplate = ({
 
         {/* Page Title */}
         {pageTitle && (
-          <div className="mt-6">
-            <h1 className="text-3xl font-bold text-foreground">
-              {pageTitle}
-            </h1>
+          <div className="mt-8">
+            <h1 className="font-display text-3xl font-light text-foreground tracking-wide">{pageTitle}</h1>
+            <div className="gold-divider mt-4 !mx-0" />
           </div>
         )}
       </div>
+
+      {/* Mobile Drawer */}
+      {mobileOpen && (
+        <div className="md:hidden bg-background border-t border-border px-6 py-6 space-y-5">
+          {!loadingCollections && hasCollections && (
+            <ScrollLink
+              to="/#collections"
+              className="block font-body text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => setMobileOpen(false)}
+            >
+              Colecciones
+            </ScrollLink>
+          )}
+          <ScrollLink
+            to="/#products"
+            className="block font-body text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+            onClick={() => setMobileOpen(false)}
+          >
+            Productos
+          </ScrollLink>
+          <Link
+            to="/blog"
+            className="block font-body text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+            onClick={() => setMobileOpen(false)}
+          >
+            Revista
+          </Link>
+        </div>
+      )}
     </div>
   )
 
   const footer = (
-    <div className={`bg-black text-white py-12 ${footerClassName}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Brand */}
-          <div>
-            <BrandLogoLeft />
-            <p className="mt-4 text-white/70">
-              Tu tienda online de confianza
-            </p>
-          </div>
+    <footer className={`bg-primary py-16 ${footerClassName}`}>
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        {/* Brand mark */}
+        <div className="text-center mb-12">
+          <span className="font-brand text-2xl tracking-[0.35em] uppercase"
+            style={{ color: 'hsl(var(--primary-foreground))' }}>
+            SOLEÏ
+          </span>
+          <div className="gold-divider mt-5" />
+          <p className="mt-5 text-xs tracking-widest uppercase font-light"
+            style={{ color: 'hsl(var(--primary-foreground) / 0.6)' }}>
+            Luxury Women's Beachwear
+          </p>
+        </div>
 
-          {/* Links */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
+          {/* Navigation */}
           <div>
-            <h3 className="font-semibold mb-4 text-white">Enlaces</h3>
-            <div className="space-y-2">
-              <Link 
-                to="/" 
-                className="block text-white/70 hover:text-white transition-colors"
-              >
-                Inicio
-              </Link>
-              <Link 
-                to="/blog" 
-                className="block text-white/70 hover:text-white transition-colors"
-              >
-                Blog
-              </Link>
-              <Link 
-                to="/terminos-y-condiciones" 
-                className="block text-white/70 hover:text-white transition-colors"
-              >
-                Términos y Condiciones
-              </Link>
-              <Link 
-                to="/aviso-de-privacidad" 
-                className="block text-white/70 hover:text-white transition-colors"
-              >
-                Aviso de Privacidad
-              </Link>
+            <h3 className="text-[10px] tracking-widest uppercase font-semibold mb-5"
+              style={{ color: 'hsl(var(--primary-foreground) / 0.5)' }}>
+              Tienda
+            </h3>
+            <div className="space-y-3">
+              {[
+                { label: 'Inicio', to: '/' },
+                { label: 'Swimwear', to: '/#collections' },
+                { label: 'Cover-ups', to: '/#collections' },
+                { label: 'Accesorios', to: '/#products' },
+              ].map(({ label, to }) => (
+                <Link key={label} to={to}
+                  className="block text-xs tracking-wider font-light transition-colors hover:opacity-100"
+                  style={{ color: 'hsl(var(--primary-foreground) / 0.65)' }}>
+                  {label}
+                </Link>
+              ))}
             </div>
           </div>
 
-          {/* Social Links */}
+          {/* Legal */}
           <div>
-            <h3 className="font-semibold mb-4 text-white">Síguenos</h3>
+            <h3 className="text-[10px] tracking-widest uppercase font-semibold mb-5"
+              style={{ color: 'hsl(var(--primary-foreground) / 0.5)' }}>
+              Legal
+            </h3>
+            <div className="space-y-3">
+              {[
+                { label: 'Términos y Condiciones', to: '/terminos-y-condiciones' },
+                { label: 'Aviso de Privacidad', to: '/aviso-de-privacidad' },
+                { label: 'Blog', to: '/blog' },
+              ].map(({ label, to }) => (
+                <Link key={label} to={to}
+                  className="block text-xs tracking-wider font-light transition-colors hover:opacity-100"
+                  style={{ color: 'hsl(var(--primary-foreground) / 0.65)' }}>
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Social */}
+          <div>
+            <h3 className="text-[10px] tracking-widest uppercase font-semibold mb-5"
+              style={{ color: 'hsl(var(--primary-foreground) / 0.5)' }}>
+              Síguenos
+            </h3>
             <SocialLinks />
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-white/20 text-center text-white/70">
-          <p>&copy; 2025 Tu Tienda. Todos los derechos reservados.</p>
+        <div className="mt-12 pt-8 border-t text-center text-[10px] tracking-widest uppercase"
+          style={{ borderColor: 'hsl(var(--primary-foreground) / 0.15)', color: 'hsl(var(--primary-foreground) / 0.4)' }}>
+          © 2025 SOLEÏ. Todos los derechos reservados.
         </div>
       </div>
-    </div>
+    </footer>
   )
 
   return (
     <>
-      <PageTemplate 
+      <PageTemplate
         header={header}
         footer={footer}
         className={className}
@@ -182,7 +241,7 @@ export const EcommerceTemplate = ({
       >
         {children}
       </PageTemplate>
-      
+
       {showCart && <FloatingCart hideOnMobile={hideFloatingCartOnMobile} />}
     </>
   )
